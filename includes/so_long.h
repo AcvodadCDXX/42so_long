@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/08 02:43:15 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/10 10:46:09 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ typedef struct s_game
 {
 	void	*mlx;
 	void	*win;
+	void	*player_img;
+	void	*collectible_img;
+	void	*wall_img;
+	void	*exit_img;
+	void	*background_img;
 	char	**map;
-	int		map_width;
-	int		map_height;
-	// other game-related members
+	int		img_width;
+	int		img_height;
 }	t_game;
 
 int		init_game(t_game *game, char *map_file);

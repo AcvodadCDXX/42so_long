@@ -12,7 +12,6 @@
 
 #include "libft.h"
 
-//Doesn't handle max int values, over/underflows
 long int	ft_atoi(const char *str)
 {
 	int			i;

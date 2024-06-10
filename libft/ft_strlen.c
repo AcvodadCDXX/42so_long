@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 15:09:07 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/07 10:56:34 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/10 11:28:40 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 size_t	ft_strlen(const char *s)
 {
-	size_t	i;
+	size_t	len;
 
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }

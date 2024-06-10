@@ -1,7 +1,7 @@
 NAME = so_long
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Iincludes -Ilibft
+CFLAGS = -Wall -Wextra -Werror -Iincludes -Ilibft -g
 
 SRCS = $(wildcard srcs/*.c)
 OBJS = $(SRCS:.c=.o)

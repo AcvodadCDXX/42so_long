@@ -15,6 +15,7 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
 # include "ft_printf/ft_printf.h"
 
 #define BUFFER_SIZE 1024
@@ -71,5 +72,4 @@ t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 int			ft_absvalue(int nb);
 void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 int			get_next_line(int fd, char **line);
-
 #endif
