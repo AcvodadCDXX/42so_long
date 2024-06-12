@@ -42,5 +42,8 @@ void    handle_error(const char *message);
 void validate_map_elements(char **map, size_t rows, size_t cols);
 void flood_fill(char **map, int x, int y, int *collectibles, int *exit);
 void validate_map_path(char **map, size_t rows, size_t cols);
+void load_images(t_game *game);
+int init_game(t_game *game, char *map_file);
+
 
 #endif

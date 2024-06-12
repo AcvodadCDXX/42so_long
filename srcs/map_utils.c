@@ -190,24 +190,3 @@ void validate_map_path(char **map, size_t rows, size_t cols)
     if (collectibles != 0 || exit != 0)
         handle_error("Error: No valid path in the map");
 }
-
-void render_map(t_game *game)
-{
-    size_t i, j;
-    for (i = 0; i < game->map_height; i++)
-    {
-        for (j = 0; j < game->map_width; j++)
-        {
-            if (game->map[i][j] == '1')
-                mlx_put_image_to_window(game->mlx, game->win, game->wall_img, j * game->img_width, i * game->img_height);
-            else if (game->map[i][j] == 'C')
-                mlx_put_image_to_window(game->mlx, game->win, game->collectible_img, j * game->img_width, i * game->img_height);
-            else if (game->map[i][j] == 'E')
-                mlx_put_image_to_window(game->mlx, game->win, game->exit_img, j * game->img_width, i * game->img_height);
-            else if (game->map[i][j] == 'P')
-                mlx_put_image_to_window(game->mlx, game->win, game->player_img, j * game->img_width, i * game->img_height);
-            else
-                mlx_put_image_to_window(game->mlx, game->win, game->background_img, j * game->img_width, i * game->img_height);
-        }
-    }
-}
