@@ -1,12 +1,5 @@
 #include "so_long.h"
 
-void handle_error(const char *message)
-{
-    ft_putendl_fd("Error", 2);
-    ft_putendl_fd((char *)message, 2);
-    exit(EXIT_FAILURE);
-}
-
 char **read_map(const char *filename, size_t *rows, size_t *cols)
 {
     int     fd;

@@ -1,90 +1,80 @@
-#include "so_long.h"
+#include <mlx.h>
+#include <stdlib.h>
+#include <stdint.h>
 
-void load_images(t_game *game)
-{
-    int width, height;
+typedef struct {
+    void *img;
+    int width;
+    int height;
+    int bpp;
+    int size_line;
+    int endian;
+    char *data;
+} t_image;
 
-    game->player_img = mlx_xpm_file_to_image(game->mlx, "assets/images/player/player.xpm", &width, &height);
-    if (!game->player_img)
-        ft_putendl_fd("Error: Failed to load player.xpm", 2);
-    
-    game->collectible_img = mlx_xpm_file_to_image(game->mlx, "assets/images/collectibles/collectible.xpm", &width, &height);
-    if (!game->collectible_img)
-        ft_putendl_fd("Error: Failed to load collectible.xpm", 2);
-    
-    game->wall_img = mlx_xpm_file_to_image(game->mlx, "assets/images/wall/wall.xpm", &width, &height);
-    if (!game->wall_img)
-        ft_putendl_fd("Error: Failed to load wall.xpm", 2);
-    
-    game->exit_img = mlx_xpm_file_to_image(game->mlx, "assets/images/exit/exit.xpm", &width, &height);
-    if (!game->exit_img)
-        ft_putendl_fd("Error: Failed to load exit.xpm", 2);
-    
-    game->background_img = mlx_xpm_file_to_image(game->mlx, "assets/images/background/background.xpm", &width, &height);
-    if (!game->background_img)
-        ft_putendl_fd("Error: Failed to load background.xpm", 2);
-    
-    if (!game->player_img || !game->collectible_img || !game->wall_img || !game->exit_img || !game->background_img)
-        handle_error("Error: Failed to load images");
+void put_pixel_to_image(t_image *img, int x, int y, int color) {
+    if (x >= 0 && x < img->width && y >= 0 && y < img->height) {
+        *(uint32_t *)(img->data + (y * img->size_line + x * (img->bpp / 8))) = color;
+    }
 }
 
-// Function to initialize game and create window
-int init_game(t_game *game, char *map_file)
-{
-    size_t rows, cols;
+int blend_colors(int bg_color, int fg_color) {
+    int alpha = (fg_color >> 24) & 0xFF;
+    if (alpha == 0) return bg_color; // fully transparent pixel
+    if (alpha == 255) return fg_color; // fully opaque pixel
 
-    game->mlx = mlx_init();
-    if (!game->mlx)
-        handle_error("Error: MLX initialization failed");
+    int inv_alpha = 255 - alpha;
 
-    game->map = read_map(map_file, &rows, &cols);
-    game->map_height = rows;
-    game->map_width = cols;
-    game->img_width = 64; // Assuming 64x64 images
-    game->img_height = 64;
+    int bg_r = (bg_color >> 16) & 0xFF;
+    int bg_g = (bg_color >> 8) & 0xFF;
+    int bg_b = bg_color & 0xFF;
 
-    game->win = mlx_new_window(game->mlx, game->map_width * game->img_width, game->map_height * game->img_height, "so_long");
-    if (!game->win)
-        handle_error("Error: Window creation failed");
+    int fg_r = (fg_color >> 16) & 0xFF;
+    int fg_g = (fg_color >> 8) & 0xFF;
+    int fg_b = fg_color & 0xFF;
 
-    load_images(game);
-    return (0);
+    int r = (fg_r * alpha + bg_r * inv_alpha) / 255;
+    int g = (fg_g * alpha + bg_g * inv_alpha) / 255;
+    int b = (fg_b * alpha + bg_b * inv_alpha) / 255;
+
+    return (r << 16) | (g << 8) | b;
 }
 
-// Function to render the map
-void render_map(t_game *game)
-{
-    size_t i, j;
-
-    for (i = 0; i < game->map_height; i++)
-    {
-        for (j = 0; j < game->map_width; j++)
-        {
-            char tile = game->map[i][j];
-            if (tile == '1')
-                mlx_put_image_to_window(game->mlx, game->win, game->wall_img, j * game->img_width, i * game->img_height);
-            else if (tile == '0')
-                mlx_put_image_to_window(game->mlx, game->win, game->background_img, j * game->img_width, i * game->img_height);
-            else if (tile == 'P')
-                mlx_put_image_to_window(game->mlx, game->win, game->player_img, j * game->img_width, i * game->img_height);
-            else if (tile == 'C')
-                mlx_put_image_to_window(game->mlx, game->win, game->collectible_img, j * game->img_width, i * game->img_height);
-            else if (tile == 'E')
-                mlx_put_image_to_window(game->mlx, game->win, game->exit_img, j * game->img_width, i * game->img_height);
+void blend_images(t_image *bg, t_image *fg, t_image *result) {
+    for (int y = 0; y < bg->height; y++) {
+        for (int x = 0; x < bg->width; x++) {
+            int bg_color = *(uint32_t *)(bg->data + (y * bg->size_line + x * (bg->bpp / 8)));
+            int fg_color = *(uint32_t *)(fg->data + (y * fg->size_line + x * (fg->bpp / 8)));
+            int blended_color = blend_colors(bg_color, fg_color);
+            put_pixel_to_image(result, x, y, blended_color);
         }
     }
 }
 
-int main(int argc, char **argv)
-{
-    t_game game;
+int main() {
+    void *mlx = mlx_init();
+    if (!mlx) return EXIT_FAILURE;
 
-    if (argc != 2)
-        handle_error("Usage: ./so_long <map_file>");
-    
-    init_game(&game, argv[1]);
-    render_map(&game);
+    void *win = mlx_new_window(mlx, 128, 128, "Test Transparency");
+    if (!win) return EXIT_FAILURE;
 
-    mlx_loop(game.mlx);
-    return (0);
+    t_image bg, fg, result;
+
+    bg.img = mlx_xpm_file_to_image(mlx, "assets/images/background/background.xpm", &bg.width, &bg.height);
+    fg.img = mlx_xpm_file_to_image(mlx, "assets/images/player/player.xpm", &fg.width, &fg.height);
+
+    if (!bg.img || !fg.img) return EXIT_FAILURE;
+
+    bg.data = mlx_get_data_addr(bg.img, &bg.bpp, &bg.size_line, &bg.endian);
+    fg.data = mlx_get_data_addr(fg.img, &fg.bpp, &fg.size_line, &fg.endian);
+
+    result.img = mlx_new_image(mlx, bg.width, bg.height);
+    result.data = mlx_get_data_addr(result.img, &result.bpp, &result.size_line, &result.endian);
+
+    blend_images(&bg, &fg, &result);
+
+    mlx_put_image_to_window(mlx, win, result.img, 0, 0);
+    mlx_loop(mlx);
+
+    return 0;
 }
