@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/14 17:14:01 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/14 18:42:45 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,20 @@ typedef struct s_game {
 }   t_game;
 
 //load_images.c
-int	init_game(t_game *game);
-void load_img(void *mlx, t_img *img, const char *path);
-void    load_static_img(t_game *game);
-void    load_player(t_game *game);
-void load_anim(void *mlx, t_img *imgs, char *prefix, size_t count);
-
-//main.c
-void	draw_tile(t_game *game, t_img *img, int x, int y);
-void	render_map(t_game *game, char **map, size_t rows, size_t cols);
-int		handle_keypress(int keycode, t_game *game);
-void	handle_error(char *message);
+void	load_img(void *mlx, t_img *img, const char *path);
+void load_static_img(t_game *game);
+void	load_anim(void *mlx, t_img *img, char *prefix, size_t count);
+void	load_player(t_game *game);
+int	load_images(t_game *game);
 
 //read_map.c
-char	**read_map(const char *filename, size_t *rows, size_t *cols);
+int	get_map_dimensions(char *file, t_game *game);
+int	read_map(char *file, t_game *game);
 
+//render_map.c
+void	put_image(t_game *game, t_img *img, int x, int y);
+void	render_map(t_game *game);
+
+//error.c
+void	handle_error(char *message);
 #endif

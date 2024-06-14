@@ -6,91 +6,102 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:09:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/10 12:42:56 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/14 19:03:29 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// Function to extract a line from the buffer
-static char *extract_line(char **buffer)
+static char	*ft_strjoin_free(char *s1, char *s2)
 {
-    char *line;
-    char *newline_pos;
-    char *temp;
-    size_t len;
+	char	*new_str;
+	size_t	len1;
+	size_t	len2;
 
-    if (!*buffer)
-        return (NULL);
-    
-    newline_pos = ft_strchr(*buffer, '\n');
-    if (newline_pos)
-    {
-        len = newline_pos - *buffer;
-        line = ft_substr(*buffer, 0, len); // Adjusted to exclude '\n'
-        temp = ft_strdup(*buffer + len + 1);
-        free(*buffer);
-        *buffer = temp;
-        if (**buffer == '\0')
-        {
-            free(*buffer);
-            *buffer = NULL;
-        }
-    }
-    else
-    {
-        line = ft_strdup(*buffer);
-        free(*buffer);
-        *buffer = NULL;
-    }
-    return (line);
+	if (!s1 || !s2)
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	new_str = malloc(len1 + len2 + 1);
+	if (!new_str)
+		return (NULL);
+	ft_memcpy(new_str, s1, len1);
+	ft_memcpy(new_str + len1, s2, len2);
+	new_str[len1 + len2] = '\0';
+	free(s1);
+	return (new_str);
 }
 
-// Function to append read string to buffer
-static int append_to_buffer(char **buffer, char *read_str, ssize_t read_len)
+static char	*get_line(char **str)
 {
-    char *temp;
+	char	*line;
+	char	*temp;
+	size_t	len;
 
-    read_str[read_len] = '\0';
-    if (*buffer)
-    {
-        temp = ft_strjoin(*buffer, read_str);
-        free(*buffer);
-        *buffer = temp;
-    }
-    else
-    {
-        *buffer = ft_strdup(read_str);
-    }
-    if (!*buffer)
-        return (-1);
-    return (1);
+	len = 0;
+	while ((*str)[len] && (*str)[len] != '\n')
+		len++;
+	if ((*str)[len] == '\n')
+	{
+		line = ft_substr(*str, 0, len);
+		temp = ft_strdup(*str + len + 1);
+		free(*str);
+		*str = temp;
+		if (!**str)
+		{
+			free(*str);
+			*str = NULL;
+		}
+	}
+	else
+	{
+		line = ft_strdup(*str);
+		free(*str);
+		*str = NULL;
+	}
+	return (line);
 }
 
-// Main function to get the next line from a file descriptor
-int get_next_line(int fd, char **line)
+static int	read_file(int fd, char **str)
 {
-    static char *buffer[1024];
-    char read_str[BUFFER_SIZE + 1];
-    ssize_t read_len;
+	char	buffer[BUFFER_SIZE + 1];
+	char	*temp;
+	int		bytes_read;
 
-    if (fd < 0 || fd >= 1024 || !line || BUFFER_SIZE <= 0)
-        return (-1);
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	while (bytes_read > 0)
+	{
+		buffer[bytes_read] = '\0';
+		if (!*str)
+			*str = ft_strdup("");
+		temp = ft_strjoin_free(*str, buffer);
+		if (!temp)
+			return (-1);
+		*str = temp;
+		if (ft_strchr(buffer, '\n'))
+			break ;
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+	}
+	return (bytes_read);
+}
 
-    while (!ft_strchr(buffer[fd], '\n'))
-    {
-        read_len = read(fd, read_str, BUFFER_SIZE);
-        if (read_len < 0 || (read_len == 0 && !buffer[fd]))
-            return (-1);
-        if (read_len == 0)
-            break ;
-        if (append_to_buffer(&buffer[fd], read_str, read_len) < 0)
-            return (-1);
-    }
-    *line = extract_line(&buffer[fd]);
-    if (!*line)
-        return (-1);
-    if (buffer[fd] == NULL)
-        return (0);
-    return (1);
+int	get_next_line(int fd, char **line)
+{
+	static char	*str[FD_SETSIZE];
+	int			bytes_read;
+
+	if (fd < 0 || !line || BUFFER_SIZE <= 0)
+		return (-1);
+	bytes_read = read_file(fd, &str[fd]);
+	if (bytes_read < 0)
+		return (-1);
+	if (bytes_read == 0 && (!str[fd] || !*str[fd]))
+	{
+		*line = ft_strdup("");
+		return (0);
+	}
+	*line = get_line(&str[fd]);
+	if (!*line)
+		return (-1);
+	return (1);
 }
