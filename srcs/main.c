@@ -1,80 +1,76 @@
-#include <mlx.h>
-#include <stdlib.h>
-#include <stdint.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
+/*   Updated: 2024/06/14 16:22:42 by bbogdano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-typedef struct {
-    void *img;
-    int width;
-    int height;
-    int bpp;
-    int size_line;
-    int endian;
-    char *data;
-} t_image;
+#include "so_long.h"
 
-void put_pixel_to_image(t_image *img, int x, int y, int color) {
-    if (x >= 0 && x < img->width && y >= 0 && y < img->height) {
-        *(uint32_t *)(img->data + (y * img->size_line + x * (img->bpp / 8))) = color;
-    }
+void	handle_error(char *message)
+{
+	ft_putendl_fd(message, 2);
+	exit(EXIT_FAILURE);
 }
 
-int blend_colors(int bg_color, int fg_color) {
-    int alpha = (fg_color >> 24) & 0xFF;
-    if (alpha == 0) return bg_color; // fully transparent pixel
-    if (alpha == 255) return fg_color; // fully opaque pixel
-
-    int inv_alpha = 255 - alpha;
-
-    int bg_r = (bg_color >> 16) & 0xFF;
-    int bg_g = (bg_color >> 8) & 0xFF;
-    int bg_b = bg_color & 0xFF;
-
-    int fg_r = (fg_color >> 16) & 0xFF;
-    int fg_g = (fg_color >> 8) & 0xFF;
-    int fg_b = fg_color & 0xFF;
-
-    int r = (fg_r * alpha + bg_r * inv_alpha) / 255;
-    int g = (fg_g * alpha + bg_g * inv_alpha) / 255;
-    int b = (fg_b * alpha + bg_b * inv_alpha) / 255;
-
-    return (r << 16) | (g << 8) | b;
+void	draw_tile(t_game *game, t_img *img, int x, int y)
+{
+	mlx_put_image_to_window(game->mlx, game->win, img->img, x * 64, y * 64);
 }
 
-void blend_images(t_image *bg, t_image *fg, t_image *result) {
-    for (int y = 0; y < bg->height; y++) {
-        for (int x = 0; x < bg->width; x++) {
-            int bg_color = *(uint32_t *)(bg->data + (y * bg->size_line + x * (bg->bpp / 8)));
-            int fg_color = *(uint32_t *)(fg->data + (y * fg->size_line + x * (fg->bpp / 8)));
-            int blended_color = blend_colors(bg_color, fg_color);
-            put_pixel_to_image(result, x, y, blended_color);
-        }
-    }
+void	render_map(t_game *game, char **map, size_t rows, size_t cols)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (i < rows)
+	{
+		j = 0;
+		while (j < cols)
+		{
+			draw_tile(game, &game->bg, j, i);
+			if (map[i][j] == '1')
+				draw_tile(game, &game->wall, j, i);
+			else if (map[i][j] == 'C')
+				draw_tile(game, &game->coll, j, i);
+			else if (map[i][j] == 'E')
+				draw_tile(game, &game->door_c, j, i); // Default to closed door
+			else if (map[i][j] == 'P')
+				draw_tile(game, &game->idle[0], j, i); // Initial player frame
+			j++;
+		}
+		i++;
+	}
 }
 
-int main() {
-    void *mlx = mlx_init();
-    if (!mlx) return EXIT_FAILURE;
+int	handle_keypress(int keycode, t_game *game)
+{
+	(void)game;
+	if (keycode == 65307) // ESC key
+		exit(EXIT_SUCCESS);
+	// Add more key handling here for movement
+	return (0);
+}
 
-    void *win = mlx_new_window(mlx, 128, 128, "Test Transparency");
-    if (!win) return EXIT_FAILURE;
+int	main(int argc, char **argv)
+{
+	t_game	game;
+	char	**map;
+	size_t	rows;
+	size_t	cols;
 
-    t_image bg, fg, result;
-
-    bg.img = mlx_xpm_file_to_image(mlx, "assets/images/background/background.xpm", &bg.width, &bg.height);
-    fg.img = mlx_xpm_file_to_image(mlx, "assets/images/player/player.xpm", &fg.width, &fg.height);
-
-    if (!bg.img || !fg.img) return EXIT_FAILURE;
-
-    bg.data = mlx_get_data_addr(bg.img, &bg.bpp, &bg.size_line, &bg.endian);
-    fg.data = mlx_get_data_addr(fg.img, &fg.bpp, &fg.size_line, &fg.endian);
-
-    result.img = mlx_new_image(mlx, bg.width, bg.height);
-    result.data = mlx_get_data_addr(result.img, &result.bpp, &result.size_line, &result.endian);
-
-    blend_images(&bg, &fg, &result);
-
-    mlx_put_image_to_window(mlx, win, result.img, 0, 0);
-    mlx_loop(mlx);
-
-    return 0;
+	if (argc != 2)
+		handle_error("Usage: ./so_long <map_file>");
+	map = read_map(argv[1], &rows, &cols);
+	init_game(&game);
+	render_map(&game, map, rows, cols);
+	mlx_key_hook(game.win, handle_keypress, &game);
+	mlx_loop(game.mlx);
+	return (0);
 }
