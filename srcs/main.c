@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/14 17:04:20 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:09:51 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,15 @@ int	handle_keypress(int keycode, t_game *game)
 	return (0);
 }
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	t_game game;
+    t_game game;
 
-	if (argc != 2)
-		handle_error("Usage: ./so_long <map_file>");
-	(void)argv;  // Silence unused parameter warning
-
-	init_game(&game);
-	mlx_key_hook(game.win, handle_keypress, &game);
-	mlx_loop(game.mlx);
-	return (0);
+    if (argc != 2)
+        handle_error("Usage: ./so_long <map_file>");
+    (void)argv;
+    init_game(&game);
+    mlx_key_hook(game.win, handle_keypress, &game);
+    mlx_loop(game.mlx);
+    return (0);
 }

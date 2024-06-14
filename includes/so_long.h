@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/14 17:03:45 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:14:01 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "libft.h"
+# include <stdio.h>
 
 typedef struct s_img {
     void    *img;
@@ -49,7 +50,7 @@ typedef struct s_game {
 
 //load_images.c
 int	init_game(t_game *game);
-void load_img(void *mlx, t_img *img, char *path);
+void load_img(void *mlx, t_img *img, const char *path);
 void    load_static_img(t_game *game);
 void    load_player(t_game *game);
 void load_anim(void *mlx, t_img *imgs, char *prefix, size_t count);
