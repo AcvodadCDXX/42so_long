@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:53:44 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/14 16:11:53 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:03:12 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void load_img(void *mlx, t_img *img, char *path)
 {
-    img->img = mlx_xpm_file_to_image(mlx, path, NULL, NULL);
-    if (!img->img) {
-        ft_putstr_fd("Error loading img: ", 2);
-        ft_putendl_fd(path, 2);
-        exit(EXIT_FAILURE);
+    img->img = mlx_xpm_file_to_image(mlx, path, &(int){0}, &(int){0});
+    if (!img->img)
+    {
+        ft_printf("Error: Failed to load image at path: %s\n", path);
+        handle_error("Failed to load image");
     }
 }
 
@@ -26,61 +26,70 @@ void load_static_img(t_game *game)
 {
     load_img(game->mlx, &game->bg, "assets/xpm/bg.xpm");
     load_img(game->mlx, &game->wall, "assets/xpm/wall.xpm");
-    load_img(game->mlx, &game->door_c, "assets/xpm/doorC.xpm");
-    load_img(game->mlx, &game->door_o, "assets/xpm/doorO.xpm");
     load_img(game->mlx, &game->coll, "assets/xpm/coll.xpm");
     load_img(game->mlx, &game->trap, "assets/xpm/trap.xpm");
+    load_img(game->mlx, &game->door_c, "assets/xpm/doorC.xpm");
+    load_img(game->mlx, &game->door_o, "assets/xpm/doorO.xpm");
 }
 
-void load_anim(void *mlx, t_img *img_array, char *base_path, int frames)
+void load_anim(void *mlx, t_img *imgs, char *prefix, size_t count)
 {
-    int i;
-    char path[50];
-    char *frame_str;
+    char path[128];
+    size_t i;
 
     i = 0;
-    while (i < frames) {
-        ft_strlcpy(path, base_path, 50);
-        frame_str = ft_itoa(i + 1);
-        ft_strlcat(path, frame_str, 50);
-        ft_strlcat(path, ".xpm", 50);
-        free(frame_str);
-        load_img(mlx, &img_array[i], path);
+    while (i < count)
+    {
+        ft_printf(path, "assets/xpm/%s%lu.xpm", prefix, i + 1);
+        load_img(mlx, &imgs[i], path);
         i++;
     }
 }
 
 void load_player(t_game *game)
 {
-    load_anim(game->mlx, game->idle, "assets/xpm/idleL", 6);
-    load_anim(game->mlx, game->idle + 6, "assets/xpm/idleR", 6);
-    load_anim(game->mlx, game->run, "assets/xpm/DsrcL", 6);
-    load_anim(game->mlx, game->run + 6, "assets/xpm/DsrcR", 6);
-    load_anim(game->mlx, game->run + 12, "assets/xpm/DdstL", 6);
-    load_anim(game->mlx, game->run + 18, "assets/xpm/DdstR", 6);
-    load_anim(game->mlx, game->run + 24, "assets/xpm/UsrcL", 6);
-    load_anim(game->mlx, game->run + 30, "assets/xpm/UsrcR", 6);
-    load_anim(game->mlx, game->run + 36, "assets/xpm/UdstL", 6);
-    load_anim(game->mlx, game->run + 42, "assets/xpm/UdstR", 6);
-    load_anim(game->mlx, game->run + 48, "assets/xpm/Lsrc", 6);
-    load_anim(game->mlx, game->run + 54, "assets/xpm/Ldst", 6);
-    load_anim(game->mlx, game->run + 60, "assets/xpm/Rsrc", 6);
-    load_anim(game->mlx, game->run + 66, "assets/xpm/Rdst", 6);
-    load_anim(game->mlx, game->damage, "assets/xpm/dmgL", 4);
-    load_anim(game->mlx, game->damage + 4, "assets/xpm/dmgR", 4);
-    load_anim(game->mlx, game->die, "assets/xpm/dieL", 6);
-    load_anim(game->mlx, game->die + 6, "assets/xpm/dieR", 6);
-    load_anim(game->mlx, game->eat, "assets/xpm/eatL", 5);
-    load_anim(game->mlx, game->eat + 5, "assets/xpm/eatR", 5);
+    load_anim(game->mlx, game->player.idle, "idleL", 6);
+    load_anim(game->mlx, game->player.idle + 6, "idleR", 6);
+    load_anim(game->mlx, game->player.run, "DsrcL", 6);
+    load_anim(game->mlx, game->player.run + 6, "DsrcR", 6);
+    load_anim(game->mlx, game->player.run + 12, "DdstL", 6);
+    load_anim(game->mlx, game->player.run + 18, "DdstR", 6);
+    load_anim(game->mlx, game->player.run + 24, "UsrcL", 6);
+    load_anim(game->mlx, game->player.run + 30, "UsrcR", 6);
+    load_anim(game->mlx, game->player.run + 36, "UdstL", 6);
+    load_anim(game->mlx, game->player.run + 42, "UdstR", 6);
+    load_anim(game->mlx, game->player.run + 48, "Lsrc", 6);
+    load_anim(game->mlx, game->player.run + 54, "Ldst", 6);
+    load_anim(game->mlx, game->player.run + 60, "Rsrc", 6);
+    load_anim(game->mlx, game->player.run + 66, "Rdst", 6);
+    load_anim(game->mlx, game->player.dmg, "dmgL", 4);
+    load_anim(game->mlx, game->player.dmg + 4, "dmgR", 4);
+    load_anim(game->mlx, game->player.die, "dieL", 6);
+    load_anim(game->mlx, game->player.die + 6, "dieR", 6);
+    load_anim(game->mlx, game->player.eat, "eatL", 5);
+    load_anim(game->mlx, game->player.eat + 5, "eatR", 5);
 }
 
-void init_game(t_game *game) {
-    game->mlx = mlx_init();
-    if (!game->mlx)
-        handle_error("MLX init failed");
-    game->win = mlx_new_window(game->mlx, 800, 600, "so_long");
-    if (!game->win)
-        handle_error("Window creation failed");
-    load_static_img(game);
-    load_player(game);
+int	init_game(t_game *game)
+{
+	size_t	rows;
+	size_t	cols;
+
+	game->mlx = mlx_init();
+	if (!game->mlx)
+		handle_error("Error: MLX initialization failed");
+
+	game->map = read_map("example1.ber", &rows, &cols);
+	game->map_height = rows;
+	game->map_width = cols;
+	game->tile_size = 64;
+
+	game->win = mlx_new_window(game->mlx, game->map_width * game->tile_size,
+		game->map_height * game->tile_size, "so_long");
+	if (!game->win)
+		handle_error("Error: Window creation failed");
+
+	load_static_img(game);
+	load_player(game);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/14 16:22:42 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:04:20 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	render_map(t_game *game, char **map, size_t rows, size_t cols)
 			else if (map[i][j] == 'E')
 				draw_tile(game, &game->door_c, j, i); // Default to closed door
 			else if (map[i][j] == 'P')
-				draw_tile(game, &game->idle[0], j, i); // Initial player frame
+				draw_tile(game, &game->player.idle[0], j, i); // Initial player frame
 			j++;
 		}
 		i++;
@@ -60,16 +60,13 @@ int	handle_keypress(int keycode, t_game *game)
 
 int	main(int argc, char **argv)
 {
-	t_game	game;
-	char	**map;
-	size_t	rows;
-	size_t	cols;
+	t_game game;
 
 	if (argc != 2)
 		handle_error("Usage: ./so_long <map_file>");
-	map = read_map(argv[1], &rows, &cols);
+	(void)argv;  // Silence unused parameter warning
+
 	init_game(&game);
-	render_map(&game, map, rows, cols);
 	mlx_key_hook(game.win, handle_keypress, &game);
 	mlx_loop(game.mlx);
 	return (0);
