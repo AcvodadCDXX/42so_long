@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 13:18:37 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 13:19:57 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/15 13:40:48 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ void	scale_image(void *mlx, t_img *img)
 	new_img = mlx_new_image(mlx, width, height);
 	data = (int *)mlx_get_data_addr(img->img, &(int){0}, &(int){0}, &(int){0});
 	new_d = (int *)mlx_get_data_addr(new_img, &(int){0}, &(int){0}, &(int){0});
-	scale_pixel(new_data, data, width, height);
+	scale_pixel(new_d, data, width, height);
 	img->img = new_img;
 }

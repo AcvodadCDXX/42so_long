@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/14 18:42:45 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:12:05 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ typedef struct s_player {
     t_img   eat[10];
 }   t_player;
 
+typedef struct s_flood_fill_state {
+	int	collectibles_found;
+	int	exit_found;
+}	t_flood_fill_state;
+
 typedef struct s_game {
     void    *mlx;
     void    *win;
@@ -48,12 +53,18 @@ typedef struct s_game {
     size_t  tile_size;
 }   t_game;
 
+//error.c
+void	handle_error(char *message);
+
 //load_images.c
 void	load_img(void *mlx, t_img *img, const char *path);
 void load_static_img(t_game *game);
 void	load_anim(void *mlx, t_img *img, char *prefix, size_t count);
 void	load_player(t_game *game);
 int	load_images(t_game *game);
+
+//scale_image.c
+void	scale_image(void *mlx, t_img *img);
 
 //read_map.c
 int	get_map_dimensions(char *file, t_game *game);
@@ -63,6 +74,14 @@ int	read_map(char *file, t_game *game);
 void	put_image(t_game *game, t_img *img, int x, int y);
 void	render_map(t_game *game);
 
-//error.c
-void	handle_error(char *message);
+//validate_elements.c
+int	validate_elements(t_game *game);
+
+//validate_flood_fill.c
+void	validate_accessibility(t_game *game, int total_coll);
+
+//validate_map.c
+void	validate_map(t_game *game);
+
+
 #endif
