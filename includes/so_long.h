@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 15:12:05 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:48:11 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,11 @@ typedef struct s_game {
     size_t  map_width;
     size_t  map_height;
     size_t  tile_size;
+    int     collected;           // Number of collected items
+    int     total_collectibles;  // Total number of collectibles in the map
+    int     anim_frame;          // Current animation frame
+    int     timer;               // Timer for managing animations
 }   t_game;
-
 //error.c
 void	handle_error(char *message);
 
