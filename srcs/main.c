@@ -6,13 +6,13 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 14:17:17 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/15 21:00:14 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	check_arguments(int argc)
+static void	check_arguments(int argc)
 {
 	if (argc != 2)
 	{
@@ -35,12 +35,41 @@ static void	initialize_mlx(t_game *game)
 	}
 }
 
-static void	initialize_game(t_game *game, char *file)
+void initialize_game(t_game *game, char *map_file)
 {
-	if (!load_images(game))
-		handle_error("Failed to load images");
-	if (!read_map(file, game))
-		handle_error("Failed to read map");
+    if (!read_map(map_file, game))
+        handle_error("Failed to read map");
+
+    validate_elements(game);
+
+    game->anim_frame = 0;
+    game->timer = 0;
+    game->last_key = 97;  // Default to facing left ('A')
+    game->player.hp = 2;  // Initialize player health
+
+    // Scan the map for the player's initial position
+    for (size_t y = 0; y < game->map_height; y++)
+    {
+        for (size_t x = 0; x < game->map_width; x++)
+        {
+            if (game->map[y][x] == 'P')
+            {
+                game->player.x = x;
+                game->player.y = y;
+                break;
+            }
+        }
+    }
+
+    if (!load_images(game))
+        handle_error("Failed to load images");
+}
+
+int close_handler(t_game *game)
+{
+    mlx_destroy_window(game->mlx, game->win);
+    exit(0);
+    return (0);
 }
 
 int	main(int argc, char **argv)
@@ -51,6 +80,9 @@ int	main(int argc, char **argv)
 	initialize_mlx(&game);
 	initialize_game(&game, argv[1]);
 	validate_map(&game);
+	mlx_key_hook(game.win, key_handler, &game);
+    mlx_hook(game.win, 17, 0, close_handler, &game);
+    mlx_loop_hook(game.mlx, game_loop, &game);
 	render_map(&game);
 	mlx_loop(game.mlx);
 	return (EXIT_SUCCESS);

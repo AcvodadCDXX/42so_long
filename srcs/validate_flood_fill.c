@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 14:44:36 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 15:24:47 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/15 20:43:08 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 static void	flood_fill(char **map, int x, int y, t_flood_fill_state *state)
 {
-	if (x < 0 || y < 0 || !map[y] \
-		|| map[y][x] == '1' || map[y][x] == 'F' || map[y][x] == 'E')
+	if (x < 0 || y < 0 || !map[y] || map[y][x] == '1' || map[y][x] == 'F')
 		return ;
 	if (map[y][x] == 'C')
-		state->collectibles_found++;
+		state->coll_found++;
 	if (map[y][x] == 'E')
 		state->exit_found++;
 	map[y][x] = 'F';
@@ -94,11 +93,11 @@ void	validate_accessibility(t_game *game, int total_coll)
 
 	find_start_position(game, &start_x, &start_y);
 	map_copy = copy_map(game->map, game->map_height);
-	state.collectibles_found = 0;
+	state.coll_found = 0;
 	state.exit_found = 0;
 	flood_fill(map_copy, start_x, start_y, &state);
 	free_map_copy(map_copy, game->map_height);
-	if (state.collectibles_found != total_coll)
+	if (state.coll_found != total_coll)
 		handle_error("Error: Not all collectibles are accessible");
 	if (state.exit_found == 0)
 		handle_error("Error: Exit is not accessible");

@@ -6,13 +6,13 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:53:44 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 13:41:51 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/15 19:52:43 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	load_img(void *mlx, t_img *img, const char *path)
+static void	load_img(void *mlx, t_img *img, const char *path)
 {
 	img->img = mlx_xpm_file_to_image(mlx, (char *)path, \
 		&(int){0}, &(int){0});
@@ -20,7 +20,7 @@ void	load_img(void *mlx, t_img *img, const char *path)
 		handle_error("Failed to load image");
 }
 
-void	load_static_img(t_game *game)
+static void	load_static_img(t_game *game)
 {
 	load_img(game->mlx, &game->bg, "assets/xpm/bg.xpm");
 	scale_image(game->mlx, &game->bg);
@@ -36,7 +36,7 @@ void	load_static_img(t_game *game)
 	scale_image(game->mlx, &game->door_o);
 }
 
-void	load_anim(void *mlx, t_img *img, char *prefix, size_t count)
+static void	load_anim(void *mlx, t_img *img, char *prefix, size_t count)
 {
 	char	path[256];
 	size_t	i;
@@ -51,7 +51,7 @@ void	load_anim(void *mlx, t_img *img, char *prefix, size_t count)
 	}
 }
 
-void	load_player(t_game *game)
+static void	load_player(t_game *game)
 {
 	load_anim(game->mlx, game->player.idle, "idleL", 6);
 	load_anim(game->mlx, game->player.idle + 6, "idleR", 6);

@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 14:16:07 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 15:12:15 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/15 20:42:23 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,7 @@ int	validate_elements(t_game *game)
 		handle_error("Error: Map must contain exactly one start position");
 	if (coll < 1)
 		handle_error("Error: Map must contain at least one collectible");
+	game->collected = 0;
+	game->total_coll = coll;
 	return (coll);
 }
