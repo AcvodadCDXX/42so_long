@@ -6,37 +6,18 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:53:44 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/14 18:56:44 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/15 13:18:48 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-
 void	load_img(void *mlx, t_img *img, const char *path)
 {
-	img->img = mlx_xpm_file_to_image(mlx, (char *)path,
+	img->img = mlx_xpm_file_to_image(mlx, (char *)path, \
 		&(int){0}, &(int){0});
 	if (!img->img)
 		handle_error("Failed to load image");
-}
-
-void scale_image(void *mlx, t_img *img)
-{
-	int width = 64;
-	int height = 64;
-	void *new_img = mlx_new_image(mlx, width, height);
-	int *data = (int *)mlx_get_data_addr(img->img, &(int){0}, &(int){0}, &(int){0});
-	int *new_data = (int *)mlx_get_data_addr(new_img, &(int){0}, &(int){0}, &(int){0});
-
-	for (int y = 0; y < height; y++)
-	{
-		for (int x = 0; x < width; x++)
-		{
-			new_data[y * width + x] = data[(y / 4) * 16 + (x / 4)];
-		}
-	}
-	img->img = new_img;
 }
 
 void	load_static_img(t_game *game)

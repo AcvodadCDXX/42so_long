@@ -6,12 +6,11 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:20:16 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/14 19:05:12 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/15 13:20:38 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
 
 int	get_map_dimensions(char *file, t_game *game)
 {
