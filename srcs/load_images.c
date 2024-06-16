@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:53:44 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 19:52:43 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/16 21:03:52 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static void	load_static_img(t_game *game)
 	scale_image(game->mlx, &game->door_c);
 	load_img(game->mlx, &game->door_o, "assets/xpm/doorO.xpm");
 	scale_image(game->mlx, &game->door_o);
+	load_img(game->mlx, &game->trap, "assets/xpm/trap.xpm");
+	scale_image(game->mlx, &game->trap);
 }
 
 static void	load_anim(void *mlx, t_img *img, char *prefix, size_t count)

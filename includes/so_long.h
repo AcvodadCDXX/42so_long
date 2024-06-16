@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/16 16:56:01 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/16 21:14:45 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ typedef struct s_player
 	t_img	dmg[8];
 	t_img	die[12];
 	t_img	eat[10];
+	int		is_eating;
+	int		is_dying;
+	int		is_taking_damage;
 	int		future_x;
 	int		future_y;
 	int		x;
@@ -61,6 +64,7 @@ typedef struct s_game
 	size_t		map_width;
 	size_t		map_height;
 	size_t		tile_size;
+	int			hp;
 	int			collected;
 	int			total_coll;
 	int			anim_frame;
@@ -87,6 +91,10 @@ int		read_map(char *file, t_game *game);
 // render_map.c
 void	put_image(t_game *game, t_img *img, int x, int y);
 void	render_map(t_game *game);
+void 	render_player_eat(t_game *game);
+void	transition_to_eat(t_game *game);
+void render_player_death(t_game *game);
+void render_player_damage(t_game *game);
 
 
 // validate_elements.c
