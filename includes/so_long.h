@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 20:49:42 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/16 16:56:01 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include "libft.h"
 # include <stdio.h>
+# include <sys/time.h>
 
 typedef struct s_img
 {
@@ -32,6 +33,8 @@ typedef struct s_player
 	t_img	dmg[8];
 	t_img	die[12];
 	t_img	eat[10];
+	int		future_x;
+	int		future_y;
 	int		x;
 	int		y;
 	int		hp;
@@ -63,6 +66,9 @@ typedef struct s_game
 	int			anim_frame;
 	int			timer;
 	int			last_key;
+	int			is_running;
+	char		run_direction;
+	struct		timeval last_update_time;
 }	t_game;
 
 // error.c

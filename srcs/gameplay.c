@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 19:53:48 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 21:36:04 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/16 17:00:35 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,51 +29,60 @@ int	key_handler(int keycode, t_game *game)
 	return (0);
 }
 
-int	game_loop(t_game *game)
+int game_loop(t_game *game)
 {
-	game->timer++;
-	if (game->timer % 5 == 0)
-	{
-		if (game->player.idle)
-			game->anim_frame = (game->anim_frame + 1) % 6;
-		render_map(game);
-	}
-	return (0);
+    struct timeval current_time;
+    gettimeofday(&current_time, NULL);
+
+    long elapsed_time = (current_time.tv_sec - game->last_update_time.tv_sec) * 1000 + (current_time.tv_usec - game->last_update_time.tv_usec) / 1000;
+    
+    if (elapsed_time >= 100)  // 100 milliseconds = 0.1 second per frame
+    {
+        game->anim_frame = (game->anim_frame + 1) % 6;
+        render_map(game);
+        game->last_update_time = current_time;
+    }
+
+    return (0);
 }
 
-void	update_player_position(int keycode, t_game *game)
+void update_player_position(int keycode, t_game *game)
 {
-	int	new_x;
-	int	new_y;
+    int new_x = game->player.x;
+    int new_y = game->player.y;
+    char direction;
 
-	new_x = game->player.x;
-	new_y = game->player.y;
-	if (keycode == 119)
-		new_y--;
-	else if (keycode == 97)
-		new_x--;
-	else if (keycode == 115)
-		new_y++;
-	else if (keycode == 100)
-		new_x++;
-	if (new_x < 0 || new_y < 0 || new_x >= (int)game->map_width || new_y >= (int)game->map_height || game->map[new_y][new_x] == '1')
-		return ;
-	if (game->map[new_y][new_x] == 'T')
-		handle_trap(game);
-	else if (game->map[new_y][new_x] == 'C')
-		handle_collectible(game, new_x, new_y);
-	else if (game->map[new_y][new_x] == 'E' && game->collected >= game->total_coll)
-		handle_exit(game);
-	else
-		move_player(game, new_x, new_y);
+    if (keycode == 119)  // W key
+    {
+        new_y--;
+        direction = 'U';
+    }
+    else if (keycode == 97)  // A key
+    {
+        new_x--;
+        direction = 'L';
+    }
+    else if (keycode == 115)  // S key
+    {
+        new_y++;
+        direction = 'D';
+    }
+    else if (keycode == 100)  // D key
+    {
+        new_x++;
+        direction = 'R';
+    }
+
+    if (new_x < 0 || new_y < 0 || new_x >= (int)game->map_width || new_y >= (int)game->map_height || game->map[new_y][new_x] == '1')
+        return;
+    if (game->map[new_y][new_x] == 'E' && game->collected < game->total_coll)
+        return;
+
+    game->is_running = 1;
+    game->run_direction = direction;
+
+    // Delay the position update to synchronize with the animation
+    game->player.future_x = new_x;
+    game->player.future_y = new_y;
 }
 
-void	move_player(t_game *game, int new_x, int new_y)
-{
-	game->player.x = new_x;
-	game->player.y = new_y;
-	if (game->last_key == 97)
-		game->anim_frame = 0;
-	else if (game->last_key == 100)
-		game->anim_frame = 0;
-}

@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 21:00:14 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/16 16:56:58 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,12 @@ void initialize_game(t_game *game, char *map_file)
         }
     }
 
+    gettimeofday(&game->last_update_time, NULL);  // Initialize last update time
+
     if (!load_images(game))
         handle_error("Failed to load images");
 }
+
 
 int close_handler(t_game *game)
 {

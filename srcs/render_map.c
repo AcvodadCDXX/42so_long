@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:10:30 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 21:42:45 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/16 17:01:24 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,57 +51,58 @@ void render_player_idle(t_game *game)
         put_image(game, &game->player.idle[game->anim_frame + 6], game->player.x, game->player.y);
 }
 
-void render_player_run(t_game *game, char direction, char src_or_dst)
+void render_player_run(t_game *game)
 {
     int frame_offset = game->anim_frame % 6;  // Cycle through 6 frames
 
-    if (direction == 'D')
+    if (game->run_direction == 'L')
     {
-        if (src_or_dst == 'src')
+        // Source tile animation
+        put_image(game, &game->player.run[48 + frame_offset], game->player.x, game->player.y);
+        // Destination tile animation
+        put_image(game, &game->player.run[54 + frame_offset], game->player.x - 1, game->player.y);
+    }
+    else if (game->run_direction == 'R')
+    {
+        // Source tile animation
+        put_image(game, &game->player.run[60 + frame_offset], game->player.x, game->player.y);
+        // Destination tile animation
+        put_image(game, &game->player.run[66 + frame_offset], game->player.x + 1, game->player.y);
+    }
+    else if (game->run_direction == 'U')
+    {
+        // Source tile animation
+        if (game->last_key == 97) // Facing left
         {
-            if (game->last_key == 97)  // 'A' key for facing left
-                put_image(game, &game->player.run[0 + frame_offset], game->player.x, game->player.y);
-            else  // Default to facing right if not left
-                put_image(game, &game->player.run[6 + frame_offset], game->player.x, game->player.y);
+            put_image(game, &game->player.run[24 + frame_offset], game->player.x, game->player.y);
+            put_image(game, &game->player.run[36 + frame_offset], game->player.x, game->player.y - 1);
         }
-        else
+        else // Facing right
         {
-            if (game->last_key == 97)
-                put_image(game, &game->player.run[12 + frame_offset], game->player.x, game->player.y);
-            else
-                put_image(game, &game->player.run[18 + frame_offset], game->player.x, game->player.y);
+            put_image(game, &game->player.run[30 + frame_offset], game->player.x, game->player.y);
+            put_image(game, &game->player.run[42 + frame_offset], game->player.x, game->player.y - 1);
         }
     }
-    else if (direction == 'U')
+    else if (game->run_direction == 'D')
     {
-        if (src_or_dst == 'src')
+        // Source tile animation
+        if (game->last_key == 97) // Facing left
         {
-            if (game->last_key == 97)
-                put_image(game, &game->player.run[24 + frame_offset], game->player.x, game->player.y);
-            else
-                put_image(game, &game->player.run[30 + frame_offset], game->player.x, game->player.y);
+            put_image(game, &game->player.run[0 + frame_offset], game->player.x, game->player.y);
+            put_image(game, &game->player.run[12 + frame_offset], game->player.x, game->player.y + 1);
         }
-        else
+        else // Facing right
         {
-            if (game->last_key == 97)
-                put_image(game, &game->player.run[36 + frame_offset], game->player.x, game->player.y);
-            else
-                put_image(game, &game->player.run[42 + frame_offset], game->player.x, game->player.y);
+            put_image(game, &game->player.run[6 + frame_offset], game->player.x, game->player.y);
+            put_image(game, &game->player.run[18 + frame_offset], game->player.x, game->player.y + 1);
         }
     }
-    else if (direction == 'L')
+	    // After the run animation completes, update the position and switch to idle
+    if (frame_offset == 5)  // Last frame of the run animation
     {
-        if (src_or_dst == 'src')
-            put_image(game, &game->player.run[48 + frame_offset], game->player.x, game->player.y);
-        else
-            put_image(game, &game->player.run[54 + frame_offset], game->player.x, game->player.y);
-    }
-    else if (direction == 'R')
-    {
-        if (src_or_dst == 'src')
-            put_image(game, &game->player.run[60 + frame_offset], game->player.x, game->player.y);
-        else
-            put_image(game, &game->player.run[66 + frame_offset], game->player.x, game->player.y);
+        game->player.x = game->player.future_x;
+        game->player.y = game->player.future_y;
+        game->is_running = 0;  // Stop running animation
     }
 }
 
@@ -109,13 +110,13 @@ void render_player_run(t_game *game, char direction, char src_or_dst)
 void render_map(t_game *game)
 {
     render_background(game);
+
     if (game->is_running)
     {
-        // Example values, update based on actual game logic
-        char direction = 'L';  // 'L' for left, 'R' for right, 'U' for up, 'D' for down
-        char src_or_dst = 'src';  // 'src' for source, 'dst' for destination
-
-        render_player_run(game, direction, src_or_dst);
+        render_player_run(game);
     }
-    render_player_idle(game);
+    else
+    {
+        render_player_idle(game);
+    }
 }
