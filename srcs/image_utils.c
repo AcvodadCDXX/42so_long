@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scale_image.c                                      :+:      :+:    :+:   */
+/*   image_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/15 13:18:37 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 13:40:48 by bbogdano         ###   ########.fr       */
+/*   Created: 2024/06/17 00:16:53 by bbogdano          #+#    #+#             */
+/*   Updated: 2024/06/17 00:39:13 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	put_image(t_game *game, t_img *img, int x, int y)
+{
+	mlx_put_image_to_window(game->mlx, game->win, img->img, x * 64, y * 64);
+}
 
 static void	scale_pixel(int *new_data, int *data, int width, int height)
 {

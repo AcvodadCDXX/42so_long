@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/16 16:56:58 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/17 05:08:14 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,38 +35,31 @@ static void	initialize_mlx(t_game *game)
 	}
 }
 
-void initialize_game(t_game *game, char *map_file)
+void	initialize_game(t_game *game, char *map_file)
 {
-    if (!read_map(map_file, game))
-        handle_error("Failed to read map");
-
-    validate_elements(game);
-
-    game->anim_frame = 0;
-    game->timer = 0;
-    game->last_key = 97;  // Default to facing left ('A')
-    game->player.hp = 2;  // Initialize player health
-
-    // Scan the map for the player's initial position
-    for (size_t y = 0; y < game->map_height; y++)
-    {
+	if (!read_map(map_file, game))
+		handle_error("Failed to read map");
+	validate_elements(game);
+	game->anim_frame = 0;
+	game->timer = 0;
+	game->last_key = 97;
+	game->player.hp = 2;
+	for (size_t y = 0; y < game->map_height; y++)
+	{
         for (size_t x = 0; x < game->map_width; x++)
-        {
-            if (game->map[y][x] == 'P')
-            {
-                game->player.x = x;
-                game->player.y = y;
-                break;
-            }
-        }
-    }
-
-    gettimeofday(&game->last_update_time, NULL);  // Initialize last update time
-
+    	{
+    	    if (game->map[y][x] == 'P')
+    	    {
+    	        game->player.x = x;
+    	        game->player.y = y;
+    	        break;
+    	    }
+    	}
+	}
+    gettimeofday(&game->last_update_time, NULL);
     if (!load_images(game))
         handle_error("Failed to load images");
 }
-
 
 int close_handler(t_game *game)
 {
@@ -86,7 +79,7 @@ int	main(int argc, char **argv)
 	mlx_key_hook(game.win, key_handler, &game);
     mlx_hook(game.win, 17, 0, close_handler, &game);
     mlx_loop_hook(game.mlx, game_loop, &game);
-	render_map(&game);
+	draw_map(&game);
 	mlx_loop(game.mlx);
 	return (EXIT_SUCCESS);
 }

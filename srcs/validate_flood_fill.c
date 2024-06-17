@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 14:44:36 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/16 21:10:35 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/17 05:03:15 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static void	flood_fill(char **map, int x, int y, t_flood_fill_state *state)
 {
-	if (x < 0 || y < 0 || !map[y] || map[y][x] == '1' || map[y][x] == 'X' || map[y][x] == 'F')
+	if (x < 0 || y < 0 || !map[y] || map[y][x] == '1' \
+		|| map[y][x] == 'X' || map[y][x] == 'F')
 		return ;
 	if (map[y][x] == 'C')
 		state->coll_found++;

@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/16 21:14:45 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/17 05:04:38 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ typedef struct s_img
 	void	*img;
 }	t_img;
 
+typedef enum e_state {
+    IDLE,
+    RUN,
+    EAT,
+    DMG,
+    DIE
+}   t_state;
+
 typedef struct s_player
 {
 	t_img	idle[12];
@@ -33,14 +41,12 @@ typedef struct s_player
 	t_img	dmg[8];
 	t_img	die[12];
 	t_img	eat[10];
-	int		is_eating;
-	int		is_dying;
-	int		is_taking_damage;
-	int		future_x;
-	int		future_y;
+    int		future_x;
+    int		future_y;
 	int		x;
 	int		y;
 	int		hp;
+	t_state state;
 }	t_player;
 
 typedef struct s_flood_fill_state
@@ -64,7 +70,6 @@ typedef struct s_game
 	size_t		map_width;
 	size_t		map_height;
 	size_t		tile_size;
-	int			hp;
 	int			collected;
 	int			total_coll;
 	int			anim_frame;
@@ -81,21 +86,26 @@ void	handle_error(char *message);
 // load_images.c
 int		load_images(t_game *game);
 
-// scale_image.c
-void	scale_image(void *mlx, t_img *img);
-
 // read_map.c
 int		get_map_dimensions(char *file, t_game *game);
 int		read_map(char *file, t_game *game);
 
-// render_map.c
-void	put_image(t_game *game, t_img *img, int x, int y);
-void	render_map(t_game *game);
-void 	render_player_eat(t_game *game);
-void	transition_to_eat(t_game *game);
-void render_player_death(t_game *game);
-void render_player_damage(t_game *game);
+// draw_map.c
+void draw_background(t_game *game);
+void draw_player_idle(t_game *game);
+void draw_map(t_game *game);
 
+
+// image_utils.c
+void put_image(t_game *game, t_img *img, int x, int y);
+void scale_image(void *mlx, t_img *img);
+
+// draw_player.c
+void draw_player_idle(t_game *game);
+void draw_player_run(t_game *game);
+void draw_player_eat(t_game *game);
+void draw_player_damage(t_game *game);
+void draw_player_death(t_game *game);
 
 // validate_elements.c
 int		validate_elements(t_game *game);
@@ -107,15 +117,24 @@ void	validate_accessibility(t_game *game, int total_coll);
 void	validate_map(t_game *game);
 
 // gameplay.c
-int  key_handler(int keycode, t_game *game);
-int  game_loop(t_game *game);
+int key_handler(int keycode, t_game *game);
+int game_loop(t_game *game);
 void update_player_position(int keycode, t_game *game);
-void move_player(t_game *game, int new_x, int new_y);
+
+// player_movement.c
+void handle_movement(int keycode, t_game *game);
+int is_valid_move(t_game *game);
+void set_player_state(t_game *game);
 
 // handle_actions.c
 void handle_trap(t_game *game);
 void handle_collectible(t_game *game, int new_x, int new_y);
 void handle_exit(t_game *game);
 
-
+//draw_player_run_utils.c
+void draw_run_left(t_game *game, int frame_offset);
+void draw_run_right(t_game *game, int frame_offset);
+void draw_run_up(t_game *game, int frame_offset);
+void draw_run_down(t_game *game, int frame_offset);
+void handle_post_run_animation(t_game *game);
 #endif
