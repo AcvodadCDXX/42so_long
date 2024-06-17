@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 05:04:38 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/17 21:19:31 by banewsl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_player
 	int		x;
 	int		y;
 	int		hp;
+	int		move_count;
 	t_state state;
 }	t_player;
 
@@ -59,6 +60,8 @@ typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
+	t_img		heart;
+	t_img		heart_half;
 	t_img		bg;
 	t_img		wall;
 	t_img		coll;
@@ -126,15 +129,14 @@ void handle_movement(int keycode, t_game *game);
 int is_valid_move(t_game *game);
 void set_player_state(t_game *game);
 
-// handle_actions.c
-void handle_trap(t_game *game);
-void handle_collectible(t_game *game, int new_x, int new_y);
-void handle_exit(t_game *game);
-
 //draw_player_run_utils.c
 void draw_run_left(t_game *game, int frame_offset);
 void draw_run_right(t_game *game, int frame_offset);
 void draw_run_up(t_game *game, int frame_offset);
 void draw_run_down(t_game *game, int frame_offset);
 void handle_post_run_animation(t_game *game);
+
+//draw_hud.c
+void draw_hud(t_game *game);
+
 #endif
