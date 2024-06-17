@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gameplay.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 19:53:48 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 05:08:03 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/17 21:05:47 by banewsl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	game_loop(t_game *game)
 	{
 		game->anim_frame++;
 		draw_map(game);
+		draw_hud(game);
 		game->last_update_time = current_time;
 	}
 	return (0);
@@ -56,4 +57,5 @@ void	update_player_position(int keycode, t_game *game)
 	game->is_running = 1;
 	game->anim_frame = 0;
 	set_player_state(game);
+	game->player.move_count++;
 }

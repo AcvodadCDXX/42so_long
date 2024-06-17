@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_player_run_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 00:53:00 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 04:44:22 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/17 19:44:48 by banewsl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,31 @@ void	draw_run_down(t_game *game, int frame_offset)
 	}
 }
 
-void	handle_post_run_animation(t_game *game)
+void handle_post_run_animation(t_game *game)
 {
 	game->player.x = game->player.future_x;
 	game->player.y = game->player.future_y;
 	game->anim_frame = 0;
+
 	if (game->player.state == EAT)
-		return ;
-	else if (game->player.state == DMG)
-		return ;
-	else
 	{
-		game->is_running = 0;
-		game->player.state = IDLE;
+		printf("Collectible picked up at (%d, %d)\n", game->player.x, game->player.y);
+		game->collected++;
+		if (game->collected >= game->total_coll)
+			game->map[game->player.y][game->player.x] = 'E';  // Open door
 	}
+	else if (game->player.state == DMG)
+	{
+		printf("Player took damage at (%d, %d)\n", game->player.x, game->player.y);
+		if (game->player.hp <= 0)
+		{
+			game->player.state = DIE;
+			printf("Player died at (%d, %d)\n", game->player.x, game->player.y);
+			handle_error("You lose!");
+		}
+	}
+
+	game->is_running = 0;
+	game->player.state = IDLE;
+	printf("Player state set to IDLE\n");
 }

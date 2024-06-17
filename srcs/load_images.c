@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_images.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:53:44 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/16 21:03:52 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/17 21:21:58 by banewsl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ static void	load_img(void *mlx, t_img *img, const char *path)
 
 static void	load_static_img(t_game *game)
 {
+	load_img(game->mlx, &game->heart, "assets/xpm/heart.xpm");
+	scale_image(game->mlx, &game->heart);
+	load_img(game->mlx, &game->heart_half, "assets/xpm/heart_half.xpm");
+	scale_image(game->mlx, &game->heart_half);
 	load_img(game->mlx, &game->bg, "assets/xpm/bg.xpm");
 	scale_image(game->mlx, &game->bg);
 	load_img(game->mlx, &game->wall, "assets/xpm/wall.xpm");

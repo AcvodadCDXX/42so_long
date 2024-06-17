@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 00:19:46 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 05:07:44 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/17 20:02:53 by banewsl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	draw_player_damage(t_game *game)
 		printf("Player took damage at (%d, %d)\n", \
 			game->player.x, game->player.y);
 		game->map[game->player.y][game->player.x] = '0';
-		game->player.hp--;
 		if (game->player.hp <= 0)
 			game->player.state = DIE;
 		else

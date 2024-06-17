@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_movement.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 00:03:53 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 05:02:15 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/17 19:44:33 by banewsl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,28 @@ int	is_valid_move(t_game *game)
 	return (1);
 }
 
-void	set_player_state(t_game *game)
+void set_player_state(t_game *game)
 {
 	if (game->map[game->player.future_y][game->player.future_x] == 'C')
+	{
+		game->map[game->player.future_y][game->player.future_x] = '0'; // Update map immediately
 		game->player.state = EAT;
+	}
 	else if (game->map[game->player.future_y][game->player.future_x] == 'X')
 	{
-		game->player.state = DMG;
 		game->player.hp--;
 		if (game->player.hp <= 0)
+		{
 			game->player.state = DIE;
+		}
+		else
+		{
+			game->map[game->player.future_y][game->player.future_x] = '0'; // Update map immediately
+			game->player.state = DMG;
+		}
+	}
+	else
+	{
+		game->player.state = RUN;
 	}
 }
