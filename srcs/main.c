@@ -6,37 +6,28 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 09:27:21 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 12:05:32 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static void	check_arguments(int argc)
-{
-	if (argc != 2)
-	{
-		ft_putendl_fd("Usage: ./so_long <map_file>", 2);
-		exit(EXIT_FAILURE);
-	}
-}
-
 static void	initialize_mlx(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
-		handle_error("Failed to initialize mlx");
-	game->win = mlx_new_window(game->mlx, 1920, 1080, "so_long");
+		handle_error("Failed to initialize MLX");
+	game->win = mlx_new_window(game->mlx, game->map_width * 64,
+			game->map_height * 64, "so_long");
 	if (!game->win)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
 		handle_error("Failed to create window");
-	}
 }
 
 void	initialize_game(t_game *game, char *map_file)
 {
+	size_t	x;
+	size_t	y;
+
 	if (!read_map(map_file, game))
 		handle_error("Failed to read map");
 	validate_elements(game);
@@ -44,42 +35,47 @@ void	initialize_game(t_game *game, char *map_file)
 	game->timer = 0;
 	game->last_key = 97;
 	game->player.hp = 2;
-	game->tile_size = 64;
-	for (size_t y = 0; y < game->map_height; y++)
+	game->player.move_count = 0;
+	y = 0;
+	while (y < game->map_height)
 	{
-        for (size_t x = 0; x < game->map_width; x++)
-    	{
-    	    if (game->map[y][x] == 'P')
-    	    {
-    	        game->player.x = x;
-    	        game->player.y = y;
-    	        break;
-    	    }
-    	}
+		x = 0;
+		while (x < game->map_width)
+		{
+			if (game->map[y][x] == 'P')
+			{
+				game->player.x = x;
+				game->player.y = y;
+				break;
+			}
+			x++;
+		}
+		y++;
 	}
-    gettimeofday(&game->last_update_time, NULL);
-    if (!load_images(game))
-        handle_error("Failed to load images");
+	gettimeofday(&game->last_update_time, NULL);
+	if (!load_images(game))
+		handle_error("Failed to load images");
 }
 
-int close_handler(t_game *game)
+int	close_handler(t_game *game)
 {
-    mlx_destroy_window(game->mlx, game->win);
-    exit(0);
-    return (0);
+	mlx_destroy_window(game->mlx, game->win);
+	exit(0);
+	return (0);
 }
 
 int	main(int argc, char **argv)
 {
 	t_game	game;
 
-	check_arguments(argc);
+	if (argc != 2)
+		handle_error("Usage: ./so_long <map_file>");
 	initialize_mlx(&game);
 	initialize_game(&game, argv[1]);
 	validate_map(&game);
 	mlx_key_hook(game.win, key_handler, &game);
-    mlx_hook(game.win, 17, 0, close_handler, &game);
-    mlx_loop_hook(game.mlx, game_loop, &game);
+	mlx_hook(game.win, 17, 0, close_handler, &game);
+	mlx_loop_hook(game.mlx, game_loop, &game);
 	draw_map(&game);
 	mlx_loop(game.mlx);
 	return (EXIT_SUCCESS);

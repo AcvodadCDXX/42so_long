@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 00:03:53 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 10:57:15 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 11:34:37 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,26 @@ int	is_valid_move(t_game *game)
 	return (1);
 }
 
-void set_player_state(t_game *game)
+void	set_player_state(t_game *game)
 {
-    if (game->map[game->player.future_y][game->player.future_x] == 'C')
-    {
-        game->map[game->player.future_y][game->player.future_x] = '0'; // Update map immediately
-        if (game->player.hp < 2) 
-            game->player.hp++;
-        game->player.state = EAT;
-    }
-    else if (game->map[game->player.future_y][game->player.future_x] == 'X')
-    {
-        game->player.hp--;
-        if (game->player.hp <= 0)
-            game->player.state = DIE;
-        else
-        {
-            game->map[game->player.future_y][game->player.future_x] = '0'; // Update map immediately
-            game->player.state = DMG;
-        }
-    }
-    else
-        game->player.state = RUN;
+	if (game->map[game->player.future_y][game->player.future_x] == 'C')
+	{
+		game->map[game->player.future_y][game->player.future_x] = '0';
+		if (game->player.hp < 2)
+			game->player.hp++;
+		game->player.state = EAT;
+	}
+	else if (game->map[game->player.future_y][game->player.future_x] == 'X')
+	{
+		game->player.hp--;
+		if (game->player.hp <= 0)
+			game->player.state = DIE;
+		else
+		{
+			game->map[game->player.future_y][game->player.future_x] = '0';
+			game->player.state = DMG;
+		}
+	}
+	else
+		game->player.state = RUN;
 }

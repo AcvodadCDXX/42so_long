@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 21:19:31 by banewsl          ###   ########.fr       */
+/*   Updated: 2024/06/18 11:56:22 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include "libft.h"
 # include <stdio.h>
 # include <sys/time.h>
+
+
 
 typedef struct s_img
 {
