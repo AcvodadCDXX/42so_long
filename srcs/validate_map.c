@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 13:43:11 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 15:10:21 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:48:41 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,21 @@ static void	check_rectangular(t_game *game)
 	game->map_width = line_length;
 }
 
+static void	check_map_size(t_game *game)
+{
+	if (game->map_height > 16)
+		handle_error("Error: Map height exceeds 16 tiles");
+	if (game->map_width > 30)
+		handle_error("Error: Map width exceeds 30 tiles");
+}
+
 void	validate_map(t_game *game)
 {
 	int	total_collectibles;
 
 	validate_walls(game);
 	check_rectangular(game);
+	check_map_size(game);
 	total_collectibles = validate_elements(game);
 	validate_accessibility(game, total_collectibles);
 }

@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 00:03:53 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 11:34:37 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:34:07 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ void	set_player_state(t_game *game)
 			game->player.state = DMG;
 		}
 	}
+	else if (game->map[game->player.future_y][game->player.future_x] == 'E' \
+		&& game->collected >= game->total_coll)
+		handle_victory(game);
 	else
 		game->player.state = RUN;
 }

@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 14:24:14 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:38:09 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	initialize_game(t_game *game, char *map_file)
 	game->last_key = 97;
 	game->player.hp = 2;
 	game->player.move_count = 0;
+	game->player.state = IDLE;
+	game->is_running = 0;
 	find_player_position(game);
 	gettimeofday(&game->last_update_time, NULL);
 	if (!load_images(game))
@@ -63,7 +65,7 @@ void	initialize_game(t_game *game, char *map_file)
 
 int	close_handler(t_game *game)
 {
-	mlx_destroy_window(game->mlx, game->win);
+    free_game(game);
 	exit(0);
 	return (0);
 }

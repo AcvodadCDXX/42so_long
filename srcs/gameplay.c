@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 19:53:48 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 13:09:43 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:57:56 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 int	key_handler(int keycode, t_game *game)
 {
 	if (keycode == 65307)
-	{
-		mlx_destroy_window(game->mlx, game->win);
-		exit(0);
-	}
+		close_handler(game);
 	if (keycode == 119 || keycode == 97 || keycode == 115 || keycode == 100)
 		update_player_position(keycode, game);
 	if (keycode == 97 || keycode == 100)

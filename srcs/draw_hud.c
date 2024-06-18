@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 21:04:32 by banewsl           #+#    #+#             */
-/*   Updated: 2024/06/18 14:22:06 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:08:18 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,3 +26,4 @@ void	draw_hud(t_game *game)
 		mlx_put_image_to_window(game->mlx, game->win, game->heart_half.img, \
 	x_offset, y_offset);
 }
+
