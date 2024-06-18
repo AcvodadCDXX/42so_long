@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_images.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:53:44 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 21:21:58 by banewsl          ###   ########.fr       */
+/*   Updated: 2024/06/18 17:38:11 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,11 @@ static void	load_player(t_game *game)
 	load_anim(game->mlx, game->player.eat + 5, "eatR", 5);
 }
 
-int	load_images(t_game *game)
-{
-	load_static_img(game);
-	load_player(game);
-	return (1);
+int load_images(t_game *game) {
+    printf("Loading static images\n");
+    load_static_img(game);
+    printf("Loading player images\n");
+    load_player(game);
+    printf("All images loaded\n");
+    return (1);
 }
