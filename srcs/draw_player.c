@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 00:19:46 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 20:02:53 by banewsl          ###   ########.fr       */
+/*   Updated: 2024/06/18 12:59:38 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	draw_player_damage(t_game *game)
 			game->player.x, game->player.y);
 	if (frame_offset == 3)
 	{
-		printf("Player took damage at (%d, %d)\n", \
-			game->player.x, game->player.y);
 		game->map[game->player.y][game->player.x] = '0';
 		if (game->player.hp <= 0)
 			game->player.state = DIE;
@@ -48,10 +46,7 @@ void	draw_player_death(t_game *game)
 		put_image(game, &game->player.die[frame_offset + 6], \
 			game->player.x, game->player.y);
 	if (frame_offset == 5)
-	{
-		printf("Player died at (%d, %d)\n", game->player.x, game->player.y);
 		handle_error("You lose!");
-	}
 }
 
 void	draw_player_eat(t_game *game)
@@ -67,8 +62,6 @@ void	draw_player_eat(t_game *game)
 			game->player.x, game->player.y);
 	if (frame_offset == 4)
 	{
-		printf("Collectible picked up at (%d, %d)\n", \
-			game->player.x, game->player.y);
 		game->map[game->player.y][game->player.x] = '0';
 		game->collected++;
 		game->player.state = IDLE;

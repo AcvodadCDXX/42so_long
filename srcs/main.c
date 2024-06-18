@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 12:05:32 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:24:14 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,16 @@ static void	initialize_mlx(t_game *game)
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		handle_error("Failed to initialize MLX");
-	game->win = mlx_new_window(game->mlx, game->map_width * 64,
-			game->map_height * 64, "so_long");
+	game->win = mlx_new_window(game->mlx, 1920, 1080, "so_long");
 	if (!game->win)
 		handle_error("Failed to create window");
 }
 
-void	initialize_game(t_game *game, char *map_file)
+static void	find_player_position(t_game *game)
 {
 	size_t	x;
 	size_t	y;
 
-	if (!read_map(map_file, game))
-		handle_error("Failed to read map");
-	validate_elements(game);
-	game->anim_frame = 0;
-	game->timer = 0;
-	game->last_key = 97;
-	game->player.hp = 2;
-	game->player.move_count = 0;
 	y = 0;
 	while (y < game->map_height)
 	{
@@ -46,12 +37,25 @@ void	initialize_game(t_game *game, char *map_file)
 			{
 				game->player.x = x;
 				game->player.y = y;
-				break;
+				return ;
 			}
 			x++;
 		}
 		y++;
 	}
+}
+
+void	initialize_game(t_game *game, char *map_file)
+{
+	if (!read_map(map_file, game))
+		handle_error("Failed to read map");
+	validate_elements(game);
+	game->anim_frame = 0;
+	game->timer = 0;
+	game->last_key = 97;
+	game->player.hp = 2;
+	game->player.move_count = 0;
+	find_player_position(game);
 	gettimeofday(&game->last_update_time, NULL);
 	if (!load_images(game))
 		handle_error("Failed to load images");

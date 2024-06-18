@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:13:49 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/07 12:21:26 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:59:49 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include "ft_printf/ft_printf.h"
 
-#define BUFFER_SIZE 1024
+# define BUFFER_SIZE 1024
 
 typedef struct s_list
 {

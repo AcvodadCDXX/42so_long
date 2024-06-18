@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 11:56:22 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 12:35:15 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 # include "libft.h"
 # include <stdio.h>
 # include <sys/time.h>
-
-
 
 typedef struct s_img
 {

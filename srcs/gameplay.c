@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 19:53:48 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 09:18:59 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:09:43 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,5 @@ void	update_player_position(int keycode, t_game *game)
 	game->anim_frame = 0;
 	set_player_state(game);
 	game->player.move_count++;
+	ft_printf("Move count: %d\n", game->player.move_count);
 }

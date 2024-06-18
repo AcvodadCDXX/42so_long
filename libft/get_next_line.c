@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:09:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/14 19:03:29 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:19:02 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ static char	*ft_strjoin_free(char *s1, char *s2)
 	return (new_str);
 }
 
+static char	*handle_no_newline(char **str)
+{
+	char	*line;
+
+	line = ft_strdup(*str);
+	free(*str);
+	*str = NULL;
+	return (line);
+}
+
 static char	*get_line(char **str)
 {
 	char	*line;
@@ -54,11 +64,7 @@ static char	*get_line(char **str)
 		}
 	}
 	else
-	{
-		line = ft_strdup(*str);
-		free(*str);
-		*str = NULL;
-	}
+		line = handle_no_newline(str);
 	return (line);
 }
 
