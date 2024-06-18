@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_player_run_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: banewsl <banewsl@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 00:53:00 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 19:44:48 by banewsl          ###   ########.fr       */
+/*   Updated: 2024/06/18 09:24:15 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void handle_post_run_animation(t_game *game)
 			handle_error("You lose!");
 		}
 	}
-
 	game->is_running = 0;
 	game->player.state = IDLE;
 	printf("Player state set to IDLE\n");

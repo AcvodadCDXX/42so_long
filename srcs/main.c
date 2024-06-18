@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/17 05:08:14 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/18 09:27:21 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	initialize_game(t_game *game, char *map_file)
 	game->timer = 0;
 	game->last_key = 97;
 	game->player.hp = 2;
+	game->tile_size = 64;
 	for (size_t y = 0; y < game->map_height; y++)
 	{
         for (size_t x = 0; x < game->map_width; x++)
