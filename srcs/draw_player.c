@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 00:19:46 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 12:59:38 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/19 12:42:45 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ void	draw_player_death(t_game *game)
 		put_image(game, &game->player.die[frame_offset + 6], \
 			game->player.x, game->player.y);
 	if (frame_offset == 5)
+	{
+		game->player.state = DIE;
+		close_handler(game);
 		handle_error("You lose!");
+	}
 }
 
 void	draw_player_eat(t_game *game)

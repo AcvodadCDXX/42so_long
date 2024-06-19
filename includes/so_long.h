@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 16:57:38 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:07:21 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	close_handler(t_game *game);
 
 // load_images.c
 int		load_images(t_game *game);
+void load_img(void *mlx, t_img *img, char *path);
 
 // read_map.c
 int		get_map_dimensions(char *file, t_game *game);

@@ -6,18 +6,20 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:53:44 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 17:38:11 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:10:45 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static void	load_img(void *mlx, t_img *img, const char *path)
+void load_img(void *mlx, t_img *img, char *path)
 {
-	img->img = mlx_xpm_file_to_image(mlx, (char *)path, \
-		&(int){0}, &(int){0});
-	if (!img->img)
-		handle_error("Failed to load image");
+    img->img = mlx_xpm_file_to_image(mlx, path, &(int){0}, &(int){0});
+    if (!img->img)
+    {
+        fprintf(stderr, "Failed to load image: %s\n", path);
+        exit(EXIT_FAILURE);
+    }
 }
 
 static void	load_static_img(t_game *game)
@@ -81,11 +83,9 @@ static void	load_player(t_game *game)
 	load_anim(game->mlx, game->player.eat + 5, "eatR", 5);
 }
 
-int load_images(t_game *game) {
-    printf("Loading static images\n");
+int load_images(t_game *game) 
+{
     load_static_img(game);
-    printf("Loading player images\n");
     load_player(game);
-    printf("All images loaded\n");
     return (1);
 }

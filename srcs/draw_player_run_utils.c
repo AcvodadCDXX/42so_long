@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 00:53:00 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 11:04:35 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/19 12:43:42 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	handle_post_run_animation(t_game *game)
 		if (game->player.hp <= 0)
 		{
 			game->player.state = DIE;
+			close_handler(game);
 			handle_error("You lose!");
 		}
 	}
