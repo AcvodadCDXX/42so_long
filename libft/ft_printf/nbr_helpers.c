@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:11 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/07 12:08:16 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/20 11:53:42 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,19 @@ int	ft_printunsigned(unsigned int n)
 	}
 	i += ft_printchar((int)(n % 10 + '0'));
 	return (i);
+}
+
+int	num_len(int num)
+{
+	int	len;
+
+	len = 0;
+	if (num <= 0)
+		len++;
+	while (num)
+	{
+		num /= 10;
+		len++;
+	}
+	return (len);
 }

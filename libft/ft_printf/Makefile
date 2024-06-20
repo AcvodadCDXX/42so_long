@@ -1,5 +1,5 @@
 NAME = ft_printf.a
-SRC = ft_printf.c nbr_helpers.c hex_helpers.c text_helpers.c
+SRC = ft_printf.c ft_sprintf.c ft_snprintf.c nbr_helpers.c hex_helpers.c text_helpers.c
 OBJ = $(SRC:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror

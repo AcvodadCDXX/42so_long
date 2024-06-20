@@ -6,20 +6,17 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:53:44 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/19 11:10:45 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/20 14:44:46 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void load_img(void *mlx, t_img *img, char *path)
+void	load_img(void *mlx, t_img *img, char *path)
 {
-    img->img = mlx_xpm_file_to_image(mlx, path, &(int){0}, &(int){0});
-    if (!img->img)
-    {
-        fprintf(stderr, "Failed to load image: %s\n", path);
-        exit(EXIT_FAILURE);
-    }
+	img->img = mlx_xpm_file_to_image(mlx, path, &(int){0}, &(int){0});
+	if (!img->img)
+		exit(EXIT_FAILURE);
 }
 
 static void	load_static_img(t_game *game)
@@ -40,19 +37,17 @@ static void	load_static_img(t_game *game)
 	scale_image(game->mlx, &game->door_c);
 	load_img(game->mlx, &game->door_o, "assets/xpm/doorO.xpm");
 	scale_image(game->mlx, &game->door_o);
-	load_img(game->mlx, &game->trap, "assets/xpm/trap.xpm");
-	scale_image(game->mlx, &game->trap);
 }
 
-static void	load_anim(void *mlx, t_img *img, char *prefix, size_t count)
+static void	load_anim(void *mlx, t_img *img, char *prefix, int count)
 {
 	char	path[256];
-	size_t	i;
+	int		i;
 
 	i = 0;
 	while (i < count)
 	{
-		snprintf(path, sizeof(path), "assets/xpm/%s%zu.xpm", prefix, i + 1);
+		ft_snprintf(path, sizeof(path), "assets/xpm/%s%d.xpm", prefix, i + 1);
 		load_img(mlx, &img[i], path);
 		scale_image(mlx, &img[i]);
 		i++;
@@ -83,9 +78,9 @@ static void	load_player(t_game *game)
 	load_anim(game->mlx, game->player.eat + 5, "eatR", 5);
 }
 
-int load_images(t_game *game) 
+int	load_images(t_game *game)
 {
-    load_static_img(game);
-    load_player(game);
-    return (1);
+	load_static_img(game);
+	load_player(game);
+	return (1);
 }
