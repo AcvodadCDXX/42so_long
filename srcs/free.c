@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 14:55:32 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/19 16:16:49 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:23:01 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,4 @@ void	free_game(t_game *game)
 	}
 }
 
-//valgrind --leak-check=full --show-leak-kinds=all ./so_long example1.ber
+//valgrind --leak-check=full --show-leak-kinds=all ./so_long map1.ber

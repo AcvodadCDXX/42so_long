@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 13:53:23 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/19 16:31:46 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:22:05 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,24 @@
 
 static void	initialize_mlx(t_game *game)
 {
+	int	screen_width;
+	int	screen_height;
+	int	window_width;
+	int	window_height;
+
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		handle_error("Failed to initialize MLX");
-	game->win = mlx_new_window(game->mlx, 1920, 1080, "so_long");
+	mlx_get_screen_size(game->mlx, &screen_width, &screen_height);
+	game->tile_size = 64;
+	window_width = game->map_width * game->tile_size;
+	window_height = game->map_height * game->tile_size;
+	if (window_width > screen_width)
+		window_width = screen_width;
+	if (window_height > screen_height)
+		window_height = screen_height;
+	game->win = mlx_new_window(game->mlx, \
+	window_width, window_height, "so_long");
 	if (!game->win)
 		handle_error("Failed to create window");
 }
@@ -59,15 +73,6 @@ void	initialize_game(t_game *game, char *map_file)
 	game->is_running = 0;
 	find_player_position(game);
 	gettimeofday(&game->last_update_time, NULL);
-	if (!load_images(game))
-		handle_error("Failed to load images");
-}
-
-int	close_handler(t_game *game)
-{
-	free_game(game);
-	exit(0);
-	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -76,9 +81,11 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		handle_error("Usage: ./so_long <map_file>");
-	initialize_mlx(&game);
 	initialize_game(&game, argv[1]);
+	initialize_mlx(&game);
 	validate_map(&game);
+	if (!load_images(&game))
+		handle_error("Failed to load images");
 	mlx_key_hook(game.win, key_handler, &game);
 	mlx_hook(game.win, 17, 0, close_handler, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);

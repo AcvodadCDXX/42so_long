@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 18:39:26 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/19 11:23:01 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:16:05 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,11 @@ void	handle_victory(t_game *game)
 	ft_printf("You win!\n");
 	free_game(game);
 	exit(EXIT_SUCCESS);
+}
+
+int	close_handler(t_game *game)
+{
+	free_game(game);
+	exit(0);
+	return (0);
 }

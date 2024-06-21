@@ -6,27 +6,30 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:20:16 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/15 13:20:38 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:15:46 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	get_map_dimensions(char *file, t_game *game)
+static int	get_map_dimensions(char *file, t_game *game)
 {
 	int		fd;
 	char	*line;
 	int		height;
 	int		width;
+	int		line_length;
 
+	height = 0;
+	width = 0;
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		handle_error("Failed to open map file");
-	height = 0;
+		return (0);
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (height == 0)
-			width = ft_strlen(line);
+		line_length = ft_strlen(line);
+		if (line_length > width)
+			width = line_length;
 		height++;
 		free(line);
 	}
@@ -50,7 +53,7 @@ int	read_map(char *file, t_game *game)
 		handle_error("Memory allocation failed for map");
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		handle_error("Failed to open map file");
+		handle_error("Failed to open map file: %s");
 	row = 0;
 	while (get_next_line(fd, &line) > 0)
 	{

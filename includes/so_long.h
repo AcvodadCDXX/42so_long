@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:50:31 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/19 16:31:50 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:11:11 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <sys/time.h>
+# include <X11/Xlib.h>
 
 typedef struct s_img
 {
@@ -88,22 +89,21 @@ typedef struct s_game
 void	handle_error(char *message);
 void	handle_victory(t_game *game);
 void	free_map(char **map, size_t height);
+int		close_handler(t_game *game);
 
 //free.c
 void	free_player(t_player *player, void *mlx);
 void	free_game(t_game *game);
-void	free_map(char **map, size_t height);
 void	free_images(t_game *game);
+void	free_map(char **map, size_t height);
 
 //main.c
-int		close_handler(t_game *game);
 
 // load_images.c
 int		load_images(t_game *game);
 void	load_img(void *mlx, t_img *img, char *path);
 
 // read_map.c
-int		get_map_dimensions(char *file, t_game *game);
 int		read_map(char *file, t_game *game);
 
 // draw_map.c

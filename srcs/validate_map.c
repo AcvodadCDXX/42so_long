@@ -6,7 +6,7 @@
 /*   By: bbogdano <bbogdano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 13:43:11 by bbogdano          #+#    #+#             */
-/*   Updated: 2024/06/18 14:48:41 by bbogdano         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:17:43 by bbogdano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,13 @@ static void	check_rectangular(t_game *game)
 
 static void	check_map_size(t_game *game)
 {
-	if (game->map_height > 16)
-		handle_error("Error: Map height exceeds 16 tiles");
-	if (game->map_width > 30)
-		handle_error("Error: Map width exceeds 30 tiles");
+	size_t	max_map_width;
+	size_t	max_map_height;
+
+	max_map_width = 3840 / game->tile_size;
+	max_map_height = 2160 / game->tile_size;
+	if (game->map_width > max_map_width || game->map_height > max_map_height)
+		handle_error("Map is too large for the screen resolution");
 }
 
 void	validate_map(t_game *game)
